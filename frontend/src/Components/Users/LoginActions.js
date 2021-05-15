@@ -23,6 +23,7 @@ export const getCurrentUser = redirectTo => dispatch => {
   axios
     .get("/api/v1/users/me/")
     .then(response => {
+      console.log(response);
       const user = {
         email: response.data.email,
         email: response.data.email

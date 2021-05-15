@@ -12,10 +12,25 @@ class CustomUserManager(BaseUserManager):
         """
         Create and save a User with the given email and password.
         """
+        is_student = extra_fields.get("is_student")
+        is_mentor = extra_fields.get("is_mentor")
+        is_superuser = extra_fields.get("is_superuser")
+        is_staff = extra_fields.get("is_staff")
+        if is_mentor or is_student:
+            is_superuser = False
+            is_staff = False
+
         if not email:
             raise ValueError(_('The Email must be set'))
         email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+        user = self.model(
+            email=email, first_name=extra_fields.get("first_name"),
+            last_name=extra_fields.get("last_name"),
+            is_student=extra_fields.get("is_student"),
+            is_mentor=extra_fields.get("is_mentor"),
+            is_superuser=is_superuser,
+            is_staff=is_staff
+        )
         user.set_password(password)
         user.save()
         return user
@@ -27,6 +42,8 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
+        extra_fields.setdefault('is_student', False)
+        extra_fields.setdefault('is_mentor', False)
 
         if extra_fields.get('is_staff') is not True:
             raise ValueError(_('Superuser must have is_staff=True.'))

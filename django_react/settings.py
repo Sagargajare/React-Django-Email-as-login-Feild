@@ -141,6 +141,23 @@ REST_FRAMEWORK = {
 # configure Djoser
 DJOSER = {
     "USER_ID_FIELD": "email",
-    "LOGIN_FIELD": "email"
+    "LOGIN_FIELD": "email",
+    'PASSWORD_RESET_CONFIRM_URL': '/password/reset/confirm/{uid}/{token}',
+
+    'ACTIVATION_URL': '/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    "SERIALIZERS": {
+        'current_user': 'hackathon.serializers.UserSerializer',
+        'activation': 'hackathon.serializers.ActivationEmail',
+    }
 
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+SITE_NAME = "Hackathon"
+
+EMAIL_HOST = "smtp.sagargajare.in"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "admin@sagargajare.in"
+EMAIL_HOST_PASSWORD = "%vosZyf0"
